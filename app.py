@@ -52,7 +52,7 @@ class ProjectManagerApp(QWidget):
                 }
                 QPushButton {
                     background-color: #A0A0A0;
-                    color: white;
+                    color: black;
                 }
                 QPushButton:hover {
                     background-color: #707070;
@@ -151,27 +151,43 @@ class ProjectManagerApp(QWidget):
         form_layout.addWidget(self.project_command)
 
         main_layout.addLayout(form_layout)
-
         # Botões de ação
         action_layout = QHBoxLayout()
 
+        # Espaço vazio antes do botão de excluir para centralizá-lo
+        right_spacer = QLabel("", self)
+        right_spacer.setFixedWidth(50)  # Ajuste o tamanho conforme necessário
+        action_layout.addWidget(right_spacer, alignment=Qt.AlignRight)
+
+        # Botão de adicionar projeto (centralizado)
         self.add_button = QPushButton("Adicionar Projeto", self)
+        self.add_button.setIcon(QIcon("./assets/plus.png"))
+        self.add_button.setFixedWidth(150)  # Define largura fixa
         self.add_button.clicked.connect(self.add_project)
-        action_layout.addWidget(self.add_button)
+        action_layout.addWidget(self.add_button, alignment=Qt.AlignCenter)
 
-        self.run_button = QPushButton("Rodar Projetos", self)
-        self.run_button.clicked.connect(self.run_projects)
-        action_layout.addWidget(self.run_button)
-
-        self.delete_button = QPushButton("Apagar Projeto", self)
+        # Botão de excluir projeto (à direita)
+        self.delete_button = QPushButton(self)
+        self.delete_button.setIcon(QIcon("./assets/trash.png"))
+        self.delete_button.setFixedWidth(50)  # Define largura fixa
+        self.delete_button.setFixedSize(30, 30)  # Define tamanho menor
+        self.delete_button.setStyleSheet("background-color: transparent; border: none;")
         self.delete_button.clicked.connect(self.delete_project)
-        action_layout.addWidget(self.delete_button)
+        action_layout.addWidget(self.delete_button, alignment=Qt.AlignRight)
 
         main_layout.addLayout(action_layout)
 
         # Lista de projetos
         self.projects_listbox = QListWidget(self)
         main_layout.addWidget(self.projects_listbox)
+
+        # Botão de rodar projetos (centralizado abaixo da lista)
+        self.run_button = QPushButton("Rodar Projetos", self)
+        self.run_button.setIcon(QIcon("./assets/play.png"))
+        self.run_button.setFixedWidth(150)  # Define tamanho fixo para o botão
+        self.run_button.clicked.connect(self.run_projects)
+
+        main_layout.addWidget(self.run_button, alignment=Qt.AlignCenter)
 
         # Preenche a lista de projetos com os projetos carregados
         self.update_project_list()
